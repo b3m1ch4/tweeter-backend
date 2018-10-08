@@ -112,6 +112,7 @@ _SpecRunner.html
 *.ttf
 *.eot
 public/
+sightings/
 
 ### Ruby ###
 *.gem
