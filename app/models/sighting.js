@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const exampleSchema = new mongoose.Schema({
-  title: {
+const sightingSchema = new mongoose.Schema({
+  entry: {
     type: String,
     required: true
   },
-  text: {
+  description: {
     type: String,
     required: true
   },
@@ -18,4 +18,4 @@ const exampleSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Example', exampleSchema)
+module.exports = mongoose.model('Sighting', sightingSchema)
