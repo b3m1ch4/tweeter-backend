@@ -26,8 +26,8 @@ router.post('/sightings', requireToken, sighting.single('image'), (req, res) => 
   s3Upload(file)
     .then((data) => {
       return Sighting.create({
-        entry: file.name,
-        description: file.desc,
+        entry: file.entry,
+        description: file.description,
         image: data.Location,
         owner: file.userId,
         originalname: req.file.originalname,
