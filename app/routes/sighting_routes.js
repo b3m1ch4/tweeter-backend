@@ -1,9 +1,9 @@
 /* ===== required files ===== */
 const express = require('express')
 const passport = require('passport')
-// multer file upload set up
 const multer = require('multer')
 const sighting = multer({ dest: 'sightings/' })
+const fs = require('fs')
 const Sighting = require('../models/sighting.js')
 const handle = require('../../lib/error_handler')
 const requireToken = passport.authenticate('bearer', { session: false })
@@ -13,27 +13,46 @@ const handle404 = customErrors.handle404
 const router = express.Router()
 const s3Upload = require('../../lib/aws-s3-upload.js')
 
-/* ===== Create ===== */
-router.post('/sightings', requireToken, sighting.single('image'), (req, res) => {
-  const file = {
-    path: req.file.path,
-    entry: req.body.entry,
-    description: req.body.description,
-    userId: req.user.id,
-    originalname: req.file.originalname
+/* ===== Create w/ Upload (in development) ===== */
+// router.post('/sightings', requireToken, sighting.single('image'), (req, res) => {
+// console.log('req is ', req)
+// const sighting = {
+//   // path: req.file.path,
+//   entry: req.body.entry,
+//   description: req.body.description,
+//   userId: req.user.id
+//   originalname: req.file.originalname
+// }
+/* ===== Amazon S3 ===== */
+// s3Upload(file)
+//   .then((data) => {
+//     return Sighting.create({
+//       entry: file.entry,
+//       description: file.description,
+//       image: data.Location,
+//       owner: file.userId,
+//       originalname: file.originalname,
+//       tag: req.body.tag
+//     })
+//   })
+//   .then(sighting => {
+//     res.status(201).json({ sighting: sighting.toObject() })
+//   })
+//   .catch(err => handle(err, res))
+// })
+/* ===== Create w/o Upload ===== */
+router.post('/sightings', requireToken, (req, res) => {
+  console.log('req is ', req)
+  const sighting = {
+    entry: req.body.sighting.entry,
+    description: req.body.sighting.description,
+    userId: req.user.id
   }
-  /* ===== Amazon S3 ===== */
-  s3Upload(file)
-    .then((data) => {
-      return Sighting.create({
-        entry: file.entry,
-        description: file.description,
-        image: data.Location,
-        owner: file.userId,
-        originalname: req.file.originalname,
-        tag: req.body.tag
-      })
-    })
+  return Sighting.create({
+    entry: sighting.entry,
+    description: sighting.description,
+    owner: sighting.userId
+  })
     .then(sighting => {
       res.status(201).json({ sighting: sighting.toObject() })
     })
