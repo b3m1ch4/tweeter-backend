@@ -40,15 +40,15 @@ const s3Upload = require('../../lib/aws-s3-upload.js')
 //   })
 //   .catch(err => handle(err, res))
 // })
+
 /* ===== Create w/o Upload ===== */
 router.post('/sightings', requireToken, (req, res) => {
-  console.log('req is ', req)
   const sighting = {
     entry: req.body.sighting.entry,
     description: req.body.sighting.description,
     userId: req.user.id
   }
-  return Sighting.create({
+  Sighting.create({
     entry: sighting.entry,
     description: sighting.description,
     owner: sighting.userId
@@ -79,6 +79,8 @@ router.get('/sightings/:id', requireToken, (req, res) => {
 
 /* ===== Delete ===== */
 router.delete('/sightings/:id', requireToken, (req, res) => {
+  console.log('token', requireToken)
+  console.log('req is', req)
   Sighting.findById(req.params.id)
     .then(handle404)
     .then(sighting => {
