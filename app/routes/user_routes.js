@@ -2,17 +2,11 @@ const express = require('express')
 const crypto = require('crypto')
 const passport = require('passport')
 const bcrypt = require('bcrypt')
-
-
 const bcryptSaltRounds = 10
-
 const handle = require('../../lib/error_handler')
 const BadParamsError = require('../../lib/custom_errors').BadParamsError
-
 const User = require('../models/user')
-
 const requireToken = passport.authenticate('bearer', { session: false })
-
 const router = express.Router()
 
 // SIGN UP
