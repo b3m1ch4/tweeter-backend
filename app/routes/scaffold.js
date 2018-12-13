@@ -1,16 +1,11 @@
 const express = require('express')
 const passport = require('passport')
-
 const Example = require('../models/example')
-
 const handle = require('../../lib/error_handler')
 const customErrors = require('../../lib/custom_errors')
-
 const handle404 = customErrors.handle404
 const requireOwnership = customErrors.requireOwnership
-
 const requireToken = passport.authenticate('bearer', { session: false })
-
 const router = express.Router()
 
 router.get('/examples', requireToken, (req, res) => {

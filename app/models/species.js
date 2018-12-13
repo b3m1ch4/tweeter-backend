@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const speciesSchema = new mongoose.Schema({
   id: {
-    type: String,
-    required: true
+    type: String
   },
   avibaseId: {
     type: String
@@ -53,7 +52,15 @@ const speciesSchema = new mongoose.Schema({
   },
   statusMisplaced: {
     type: String
+  },
+  sightings: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Sighting',
+    required: false
   }
+},
+{
+  timestamps: true
 })
 
 module.exports = mongoose.model('Species', speciesSchema)

@@ -1,1 +1,1 @@
-mongoimport --db tweeter --collection species --type csv --file '/Users/m1ch4/wdi/projects/tweeter-backend/data/NACC_list_species.csv' --headerline
+mongoimport --db tweeter-development --collection species --type csv --file '/Users/m1ch4/wdi/projects/tweeter-backend/data/NACC_list_species.csv' --headerline

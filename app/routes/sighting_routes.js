@@ -11,39 +11,8 @@ const customErrors = require('../../lib/custom_errors')
 const requireOwnership = customErrors.requireOwnership
 const handle404 = customErrors.handle404
 const router = express.Router()
-const s3Upload = require('../../lib/aws-s3-upload.js')
 
-/* ===== Create w/ Upload (in development) ===== */
-// router.post('/sightings', requireToken, sighting.single('image'), (req, res) => {
-//   console.log('sighting is', sighting)
-//   console.log('req is', req)
-//   const file = {
-//     path: req.file.path,
-//     entry: req.body.entry,
-//     description: req.body.description,
-//     userId: req.user.id,
-//     foldername: req.user.email.substring(req.user.email.indexOf('@'), 0),
-//     originalname: req.file.originalname
-//   }
-//   /* ===== Amazon S3 ===== */
-//   s3Upload(file)
-//     .then((data) => {
-//       return Sighting.create({
-//         entry: file.entry,
-//         description: file.description,
-//         image: data.Location,
-//         owner: file.userId,
-//         originalname: file.originalname,
-//         tag: req.body.tag
-//       })
-//     })
-//     .then(sighting => {
-//       res.status(201).json({ sighting: sighting.toObject() })
-//     })
-//     .catch(err => handle(err, res))
-// })
-
-/* ===== Create w/o Upload ===== */
+/* ===== Create w/ Upload ===== */
 router.post('/sightings', requireToken, (req, res) => {
   const sighting = {
     entry: req.body.sighting.entry,
