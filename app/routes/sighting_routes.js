@@ -15,30 +15,32 @@ const s3Upload = require('../../lib/aws-s3-upload.js')
 
 /* ===== Create w/ Upload (in development) ===== */
 // router.post('/sightings', requireToken, sighting.single('image'), (req, res) => {
-// console.log('req is ', req)
-// const sighting = {
-//   // path: req.file.path,
-//   entry: req.body.entry,
-//   description: req.body.description,
-//   userId: req.user.id
-//   originalname: req.file.originalname
-// }
-/* ===== Amazon S3 ===== */
-// s3Upload(file)
-//   .then((data) => {
-//     return Sighting.create({
-//       entry: file.entry,
-//       description: file.description,
-//       image: data.Location,
-//       owner: file.userId,
-//       originalname: file.originalname,
-//       tag: req.body.tag
+//   console.log('sighting is', sighting)
+//   console.log('req is', req)
+//   const file = {
+//     path: req.file.path,
+//     entry: req.body.entry,
+//     description: req.body.description,
+//     userId: req.user.id,
+//     foldername: req.user.email.substring(req.user.email.indexOf('@'), 0),
+//     originalname: req.file.originalname
+//   }
+//   /* ===== Amazon S3 ===== */
+//   s3Upload(file)
+//     .then((data) => {
+//       return Sighting.create({
+//         entry: file.entry,
+//         description: file.description,
+//         image: data.Location,
+//         owner: file.userId,
+//         originalname: file.originalname,
+//         tag: req.body.tag
+//       })
 //     })
-//   })
-//   .then(sighting => {
-//     res.status(201).json({ sighting: sighting.toObject() })
-//   })
-//   .catch(err => handle(err, res))
+//     .then(sighting => {
+//       res.status(201).json({ sighting: sighting.toObject() })
+//     })
+//     .catch(err => handle(err, res))
 // })
 
 /* ===== Create w/o Upload ===== */
@@ -46,11 +48,13 @@ router.post('/sightings', requireToken, (req, res) => {
   const sighting = {
     entry: req.body.sighting.entry,
     description: req.body.sighting.description,
+    image: req.body.sighting.image,
     userId: req.user.id
   }
   Sighting.create({
     entry: sighting.entry,
     description: sighting.description,
+    image: req.body.sighting.image,
     owner: sighting.userId
   })
     .then(sighting => {
@@ -79,8 +83,6 @@ router.get('/sightings/:id', requireToken, (req, res) => {
 
 /* ===== Delete ===== */
 router.delete('/sightings/:id', requireToken, (req, res) => {
-  console.log('token', requireToken)
-  console.log('req is', req)
   Sighting.findById(req.params.id)
     .then(handle404)
     .then(sighting => {
